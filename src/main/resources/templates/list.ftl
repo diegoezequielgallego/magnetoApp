@@ -88,8 +88,8 @@
 					<tbody>
 						<tr ng-repeat="d in data.registroMutantes">
 							<td>{{d.id}}</td>
-							<td>{{d.nombre}}</td>
-							<td>{{d.isMutante}}</td>
+							<td>{{d.name}}</td>
+							<td>{{d.isMutant}}</td>
 						</tr>
 					</tbody>
 				</table>
