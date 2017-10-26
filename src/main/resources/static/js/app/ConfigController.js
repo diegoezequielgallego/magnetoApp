@@ -4,15 +4,10 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
 		//se crean todas las variables y objetos dentro de 
 		//otro asi a la hora de limpiarlos es mas optimo angular
 		$scope.data = {
-			config: {},
-			properties: {},
-			configList: [],
 			registroMutantes: [],
 			successMessage : '',
 			errorMessage : '',
-			
-			countMutantDna: '4',
-			
+			countMutantDna: {},
 			buttonRunDisable : false
 		}
 
@@ -20,12 +15,10 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
             console.log('Submitting');
             $scope.data.buttonRunDisable = true;
             $scope.data.successMessage = 'Corriendo ...';
-            $scope.data.configList = []; 
+
+            var dna = ["ATGGGG", "CATTGA", "TTATGA", "TGAAGA", "CCCCTA", "TCACTG"];
             
-            var name = 'CyborgAmish';
-            var dna = ["ATGTGA", "CATTGC", "TTATGT", "TGAAGG", "CCCCTA", "TCACTG"];
-            
-            service.isMutant(dna).then(
+            service.isMutant({dna: dna}).then(
                 function (response) {
                 	$scope.data.successMessage = 'Es mutante';
                 	$scope.data.errorMessage='';
@@ -48,14 +41,28 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
                 	$scope.data.buttonRunDisable = false;
                 },
                 function (errResponse) {
-                    console.error('Error while removing user ' + id + ', Error :' + errResponse.data);
+                    console.error('Error while processing , Error :' + errResponse.data);
                     $scope.data.buttonRunDisable = false;
                 }
             );
             
         }
-        
-        
+
+        $scope.getStats = function() {
+            $scope.data.buttonRunDisable = true;
+            service.getStats().then(
+                function (response) {
+                    $scope.data.countMutantDna = response;
+                    $scope.data.buttonRunDisable = false;
+                },
+                function (errResponse) {
+                    console.error('Error while processing , Error :' + errResponse.data);
+                    $scope.data.buttonRunDisable = false;
+                }
+            );
+
+        }
+
     }
 
 

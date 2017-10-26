@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mercadolibre.magneto.dto.CountDTO;
 import com.mercadolibre.magneto.util.DnaUtils;
 import com.mercadolibre.magneto.util.MutantThread;
 import com.mercadolibre.magneto.util.ThreadUtil;
@@ -25,15 +26,28 @@ public class MutantService {
 	public List<Mutant> getAllMutants(){
 		return mutantRepository.findAll();
 	}
-	
-	public boolean isMutant(String[] dna) {
 
+
+	public CountDTO getStats(){
+		System.out.println("llego");
+		if(DnaUtils.getCount() == null){
+			DnaUtils.setCount(mutantRepository.findTotales());
+			DnaUtils.getCount().setCountHumanDna(mutantRepository.count() - DnaUtils.getCount().getCountMutantDna());
+
+			DnaUtils.getCount().setRatio((float) DnaUtils.getCount().getCountMutantDna() / DnaUtils.getCount().getCountHumanDna());
+		}
+		return DnaUtils.getCount();
+	}
+
+
+	public boolean isMutant(List<String> dna) {
 
 		//Uso este mapa como si fuese una memoria cache o un MongoDB
 		//lo ideal no seria usar un mapa como si fuese cache pero
 		//por cuestiones de tiempo no llgue a configurar un mongoDB en el contenedor
-		if(DnaUtils.getDnaMap().get(Arrays.hashCode(dna)) != null){
-			return DnaUtils.getDnaMap().get(Arrays.hashCode(dna));
+		if(DnaUtils.getDnaMap().get(Arrays.hashCode(dna.toArray())) != null){
+			System.out.println("ya está registrado");
+			return DnaUtils.getDnaMap().get(Arrays.hashCode(dna.toArray()));
 		}
 
 
@@ -63,9 +77,21 @@ public class MutantService {
 		//guardando en la BBDD gradualmente
 		ThreadUtil.getExecutorService().execute(new MutantThread(mutant, mutantRepository));
 
-		DnaUtils.getDnaMap().put(Arrays.hashCode(dna),mutantResult);
+		DnaUtils.getDnaMap().put(Arrays.hashCode(dna.toArray()), mutantResult);
+		amountRatio(mutantResult);
 
 		return mutantResult;
+	}
+
+	private void amountRatio(Boolean mutantResult){
+		if(DnaUtils.getCount() != null){
+			if(mutantResult){
+				DnaUtils.getCount().sumMutant();
+			}else{
+				DnaUtils.getCount().sumHuman();
+			}
+			DnaUtils.getCount().setRatio((float) DnaUtils.getCount().getCountMutantDna() / DnaUtils.getCount().getCountHumanDna());
+		}
 
 	}
 
@@ -87,8 +113,8 @@ public class MutantService {
 				}
 
 				// Esta validacion lo hago por si esta en la columna 4 de 6
-				// nunca va a tener 4 campos continuos hacia adelante y evitar procesamiento
-				// innecesario
+				// nunca va a tener 4 campos continuos horizontales
+				// hacia adelante y evitar procesamiento innecesario
 				if ((columPos + 3) <= auxDna.getDnaLine().size()) {
 					// BUSCAR DE MANERA HORIZONTAL DE IZQ A DERECHA
 					if (searchHorizontal(auxDna, nitroBase, columPos, 0)) {

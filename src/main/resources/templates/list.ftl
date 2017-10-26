@@ -32,7 +32,7 @@
 									class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid || myForm.$pristine" />
 								<button type="button" ng-click="getallmutants()" class="btn btn-warning btn-sm"
 									ng-disabled="myForm.$pristine">view all mutants</button>
-                                <button type="button" ng-click="getallmutants()" class="btn btn-warning btn-sm"
+                                <button type="button" ng-click="getStats()" class="btn btn-warning btn-sm"
                                         ng-disabled="myForm.$pristine">view stats</button>
 							</div>
 						</div>
@@ -51,17 +51,17 @@
 			<div class="row">
 				<div class="form-group col-md-12">
 					<label class="col-md-2 control-lable" >Count Mutant DNA: </label>
-					<label class="col-md-2 control-lable" >{{data.countMutantDna}}</label>
+					<label class="col-md-2 control-lable" >{{data.countMutantDna.countMutantDna}}</label>
 				</div>
 				
 				<div class="form-group col-md-12">
 					<label class="col-md-2 control-lable" >Count Human DNA: </label>
-					<label class="col-md-2 control-lable" >{{data.countMutantDna}}</label>
+					<label class="col-md-2 control-lable" >{{data.countMutantDna.countHumanDna}}</label>
 				</div>
 				
 				<div class="form-group col-md-12">
 					<label class="col-md-2 control-lable" >Ratio: </label>
-					<label class="col-md-2 control-lable" >{{data.countMutantDna}}</label>
+					<label class="col-md-2 control-lable" >{{data.countMutantDna.ratio}}</label>
 				</div>
 			</div>
 

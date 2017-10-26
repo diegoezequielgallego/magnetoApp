@@ -1,5 +1,7 @@
 package com.mercadolibre.magneto.util;
 
+import com.mercadolibre.magneto.dto.CountDTO;
+
 import java.util.*;
 
 /**
@@ -8,6 +10,8 @@ import java.util.*;
 public class DnaUtils {
 
     private static volatile Map<Integer, Boolean> dnaMap = new TreeMap<>();
+    private static volatile CountDTO cout;
+
 
     private static final List<String> FIRSTNAME_LIST = new ArrayList<>(
             Arrays.asList("Cyborg", "Beacon", "Lady", "PantalosnesCuadrados", "UltraSuperMega"));
@@ -18,6 +22,14 @@ public class DnaUtils {
 
     private DnaUtils(){
 
+    }
+
+    public static CountDTO getCount(){
+        return cout;
+    }
+
+    public static void setCount(CountDTO count){
+        cout = count;
     }
 
     public static Map<Integer, Boolean> getDnaMap(){
