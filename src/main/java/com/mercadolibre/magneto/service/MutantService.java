@@ -19,6 +19,10 @@ public class MutantService {
 	@Autowired
 	MutantRepository mutantRepository;
 	
+	public List<Mutant> getAllMutants(){
+		return mutantRepository.findAll();
+	}
+	
 	public boolean isMutant(String[] dna, String mutantName) {
 
 		RowDna rowDna;
@@ -39,8 +43,8 @@ public class MutantService {
 		
 		Mutant mutant = new Mutant();
 		mutant.setDna(stb.toString());
-		mutant.setNombre(mutantName);
-		mutant.setIsMutante(mutantResult ? 1 : 0);
+		mutant.setName(mutantName);
+		mutant.setIsMutant(mutantResult ? 1 : 0);
 		
 		mutantRepository.save(mutant);
 		

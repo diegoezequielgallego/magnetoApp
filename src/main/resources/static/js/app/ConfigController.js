@@ -7,9 +7,12 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
 			config: {},
 			properties: {},
 			configList: [],
-			registroLlamada: [],
+			registroMutantes: [],
 			successMessage : '',
 			errorMessage : '',
+			
+			countMutantDna: '4',
+			
 			buttonRunDisable : false
 		}
 
@@ -38,10 +41,10 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
         }
         
         
-        $scope.loadLog = function() {
-            service.loadLog().then(
-                function (registroLlamada) {
-                	$scope.data.registroLlamada = registroLlamada;
+        $scope.getallmutants = function() {
+            service.getallmutants().then(
+                function (response) {
+                	$scope.data.registroMutantes = response;
                 	$scope.data.buttonRunDisable = false;
                 },
                 function (errResponse) {

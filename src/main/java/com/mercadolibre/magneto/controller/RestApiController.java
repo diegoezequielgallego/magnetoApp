@@ -22,22 +22,32 @@ public class RestApiController {
 
 	@Autowired
 	MutantService configService;
-	
+
 	@RequestMapping(value = "/mutant/{name}", method = RequestMethod.POST)
 	public ResponseEntity<?> isMutant(@RequestBody String[] dna, @PathVariable("name") String mutantName) {
 		try {
 			if (configService.isMutant(dna, mutantName)) {
 				return ResponseEntity.ok(HttpStatus.OK);
-			}else {
+			} else {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new CustomErrorType("No Es mutante"));
 			}
-			
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.badRequest().body(new CustomErrorType("fallo al analizar ADN"));
 		}
-		
+
 	}
-	
+
+	@RequestMapping(value = "/getallmutants/", method = RequestMethod.POST)
+	public ResponseEntity<?> getAllMutants() {
+		try {
+			return ResponseEntity.ok(configService.getAllMutants());
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return ResponseEntity.badRequest().body(new CustomErrorType("fallo al obtener mutantes"));
+		}
+
+	}
 
 }

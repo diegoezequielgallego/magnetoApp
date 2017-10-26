@@ -16,10 +16,10 @@ public class Mutant {
 	private Long id;
 
 	@Column(name="NOMBRE", nullable=false)
-	private String nombre;
+	private String name;
 
 	@Column(name="MUTANTE", nullable=false)
-	private Integer isMutante;
+	private Integer isMutant;
 	
 	@Column(name="DNA", nullable=false)
 	private String dna;
@@ -28,9 +28,9 @@ public class Mutant {
 
 	}
 	
-	public Mutant(String nombre, int isMutante, String dna) {
-		this.nombre = nombre;
-		this.isMutante = isMutante;
+	public Mutant(String name, int isMutant, String dna) {
+		this.name = name;
+		this.isMutant = isMutant;
 		this.dna = dna;
 	}
 
@@ -42,28 +42,28 @@ public class Mutant {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public Integer getIsMutante() {
-		return isMutante;
-	}
-
-	public void setIsMutante(Integer isMutante) {
-		this.isMutante = isMutante;
-	}
-
 	public String getDna() {
 		return dna;
 	}
 
 	public void setDna(String dna) {
 		this.dna = dna;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getIsMutant() {
+		return isMutant;
+	}
+
+	public void setIsMutant(Integer isMutant) {
+		this.isMutant = isMutant;
 	}
 	
 	

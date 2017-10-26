@@ -6,16 +6,14 @@ angular.module('crudApp').factory('ConfigService',
     		//a la hora de limpiarlo angular es mas optimo
             var factory = {
         
-        		loadLog: function() {
+            	getallmutants: function() {
                     var deferred = $q.defer();
-                    $http.post(urls.USER_SERVICE_API + "getLog/")
+                    $http.post(urls.USER_SERVICE_API + "getallmutants/")
                         .then(
                             function (response) {
-                                console.log('Fetched successfully User with id :');
                                 deferred.resolve(response.data);
                             },
                             function (errResponse) {
-                                console.error('Error while loading user with id :');
                                 deferred.reject(errResponse);
                             }
                         );
