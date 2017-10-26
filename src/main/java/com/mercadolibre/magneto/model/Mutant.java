@@ -6,11 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name="PERSONAL")
-public class Personal {
+@Table(name="MUTANTES")
+public class Mutant {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -19,46 +18,54 @@ public class Personal {
 	@Column(name="NOMBRE", nullable=false)
 	private String nombre;
 
-	@Column(name="PUESTO", nullable=false)
-	private Integer puesto;
+	@Column(name="MUTANTE", nullable=false)
+	private Integer isMutante;
 	
-	@Transient
-	private boolean libre;
+	@Column(name="DNA", nullable=false)
+	private String dna;
 	
-	
-	public Personal() {
+	public Mutant() {
 
 	}
 	
-	public Personal(String nombre, int puesto) {
+	public Mutant(String nombre, int isMutante, String dna) {
 		this.nombre = nombre;
-		this.puesto = puesto;
-		this.libre = true;
+		this.isMutante = isMutante;
+		this.dna = dna;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public int getPuesto() {
-		return puesto;
+
+	public Integer getIsMutante() {
+		return isMutante;
 	}
-	public void setPuesto(int puesto) {
-		this.puesto = puesto;
+
+	public void setIsMutante(Integer isMutante) {
+		this.isMutante = isMutante;
 	}
-	public boolean isLibre() {
-		return libre;
+
+	public String getDna() {
+		return dna;
 	}
-	public void setLibre(boolean libre) {
-		this.libre = libre;
+
+	public void setDna(String dna) {
+		this.dna = dna;
 	}
+	
+	
 
 }

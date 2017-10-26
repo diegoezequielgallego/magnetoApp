@@ -4,29 +4,47 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.mercadolibre.magneto.dto.RowDna;
+import com.mercadolibre.magneto.model.Mutant;
+import com.mercadolibre.magneto.repositories.MutantRepository;
 
 @Service
 @Scope("singleton")
 public class MutantService {
 
+	@Autowired
+	MutantRepository mutantRepository;
+	
 	public boolean isMutant(String[] dna, String mutantName) {
 
 		RowDna rowDna;
 		List<RowDna> rowDnaList = new ArrayList<>();
-
+		StringBuffer stb = new StringBuffer();
+		
 		// simulo la matriz en un objeto Row que dentro tiene una lista de string
 		// simulando las columnas
 		for (String dnaLine : dna) {
 			rowDna = new RowDna();
 			rowDna.setDnaLine(Arrays.asList(dnaLine.split("(?!^)")));
 			rowDnaList.add(rowDna);
+			stb.append(dnaLine);
+			stb.append("-");
 		}
 
-		return analizeMatrix(rowDnaList);
+		boolean mutantResult = analizeMatrix(rowDnaList);
+		
+		Mutant mutant = new Mutant();
+		mutant.setDna(stb.toString());
+		mutant.setNombre(mutantName);
+		mutant.setIsMutante(mutantResult ? 1 : 0);
+		
+		mutantRepository.save(mutant);
+		
+		return mutantResult;
 
 	}
 
