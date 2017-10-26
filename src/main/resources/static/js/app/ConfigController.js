@@ -25,7 +25,7 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
             var name = 'CyborgAmish';
             var dna = ["ATGTGA", "CATTGC", "TTATGT", "TGAAGG", "CCCCTA", "TCACTG"];
             
-            service.isMutant(dna, name).then(
+            service.isMutant(dna).then(
                 function (response) {
                 	$scope.data.successMessage = 'Es mutante';
                 	$scope.data.errorMessage='';

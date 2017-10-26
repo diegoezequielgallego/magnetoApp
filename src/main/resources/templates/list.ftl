@@ -15,18 +15,6 @@
 
 						<div class="row">
 							<div class="form-group col-md-12"
-								ng-class="{'has-error': myForm.name.$dirty && myForm.name.$error.required}">
-								<label class="col-md-2 control-lable" for="llamada">Nombre: </label>
-								<div class="col-md-7">
-									<input type="text" name="name" ng-model="data.properties.name"
-										id="name" class="form-control input-sm" required />
-								</div>
-								<span ng-show="myForm.name.$dirty && myForm.name.$error.required">campo requerido</span>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="form-group col-md-12"
 								ng-class="{'has-error': myForm.dna.$dirty && myForm.dna.$error.required}">
 								<label class="col-md-2 control-lable" for="llamada">DNA: </label>
 								<div class="col-md-7">
@@ -43,7 +31,9 @@
 								<input type="button" ng-click="submit()" value="Disparar Llamadas"
 									class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid || myForm.$pristine" />
 								<button type="button" ng-click="getallmutants()" class="btn btn-warning btn-sm"
-									ng-disabled="myForm.$pristine">view stats</button>
+									ng-disabled="myForm.$pristine">view all mutants</button>
+                                <button type="button" ng-click="getallmutants()" class="btn btn-warning btn-sm"
+                                        ng-disabled="myForm.$pristine">view stats</button>
 							</div>
 						</div>
 					</fieldset>

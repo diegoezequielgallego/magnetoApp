@@ -20,9 +20,9 @@ angular.module('crudApp').factory('ConfigService',
                     return deferred.promise;
                 },
                 
-                isMutant: function(dna, name) {
+                isMutant: function(dna) {
                     var deferred = $q.defer();
-                    $http.post(urls.USER_SERVICE_API + "mutant/" + name, dna)
+                    $http.post(urls.USER_SERVICE_API + "mutant/", dna)
                         .then(
                             function (response) {
                                 //loadAllUsers();

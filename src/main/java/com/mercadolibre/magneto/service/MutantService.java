@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mercadolibre.magneto.util.DnaUtils;
+import com.mercadolibre.magneto.util.MutantThread;
+import com.mercadolibre.magneto.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,16 @@ public class MutantService {
 		return mutantRepository.findAll();
 	}
 	
-	public boolean isMutant(String[] dna, String mutantName) {
+	public boolean isMutant(String[] dna) {
+
+
+		//Uso este mapa como si fuese una memoria cache o un MongoDB
+		//lo ideal no seria usar un mapa como si fuese cache pero
+		//por cuestiones de tiempo no llgue a configurar un mongoDB en el contenedor
+		if(DnaUtils.getDnaMap().get(Arrays.hashCode(dna)) != null){
+			return DnaUtils.getDnaMap().get(Arrays.hashCode(dna));
+		}
+
 
 		RowDna rowDna;
 		List<RowDna> rowDnaList = new ArrayList<>();
@@ -43,16 +55,21 @@ public class MutantService {
 		
 		Mutant mutant = new Mutant();
 		mutant.setDna(stb.toString());
-		mutant.setName(mutantName);
+		mutant.setName(DnaUtils.generateRandomName());
 		mutant.setIsMutant(mutantResult ? 1 : 0);
-		
-		mutantRepository.save(mutant);
-		
+
+		//Para que la api puede soportar la carga hago que el guardado en la base de datos se ejecute en
+		//un thread aparte, asi la respusta es rapida y en paralelo puede ejecutar hasta 50 hilos y que los valla
+		//guardando en la BBDD gradualmente
+		ThreadUtil.getExecutorService().execute(new MutantThread(mutant, mutantRepository));
+
+		DnaUtils.getDnaMap().put(Arrays.hashCode(dna),mutantResult);
+
 		return mutantResult;
 
 	}
 
-	private boolean analizeMatrix(List<RowDna> rowDnaList) {
+	public boolean analizeMatrix(List<RowDna> rowDnaList) {
 		int rowPos;
 		int columPos;
 		int mathDnaMutant = 0;

@@ -23,10 +23,10 @@ public class RestApiController {
 	@Autowired
 	MutantService configService;
 
-	@RequestMapping(value = "/mutant/{name}", method = RequestMethod.POST)
-	public ResponseEntity<?> isMutant(@RequestBody String[] dna, @PathVariable("name") String mutantName) {
+	@RequestMapping(value = "/mutant/", method = RequestMethod.POST)
+	public ResponseEntity<?> isMutant(@RequestBody String[] dna) {
 		try {
-			if (configService.isMutant(dna, mutantName)) {
+			if (configService.isMutant(dna)) {
 				return ResponseEntity.ok(HttpStatus.OK);
 			} else {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new CustomErrorType("No Es mutante"));
