@@ -50,9 +50,10 @@ public class MutantService {
 
 	public boolean isMutant(List<String> dna) {
 
-		//Uso este mapa como si fuese una memoria cache o un MongoDB
-		//lo ideal no seria usar un mapa como si fuese cache pero
-		//por cuestiones de tiempo no llgue a configurar un mongoDB en el contenedor
+		//Uso este mapa como si fuese una memoria cache 
+		//lo ideal seria usar memcache u otro cache distribuido o MongoDB
+		//como es un examen y lo puedan levantar localmente sin instalar nada 
+		//o levantarlo facilmente en el contenedor onlcloud decidi no usar estas tecnologias
 		if(DnaUtils.getDnaMap().get(Arrays.hashCode(dna.toArray())) != null){
 			logger.warn("el DNA ya está registrado");
 			return DnaUtils.getDnaMap().get(Arrays.hashCode(dna.toArray()));
@@ -108,7 +109,11 @@ public class MutantService {
 		int columPos;
 		int mathDnaMutant = 0;
 
-		// LEO LA MATRIZ DE IZQ A DERECHA Y DE ARRIBA HACIA ABAJO
+		//LEO LA MATRIZ DE IZQ A DERECHA Y DE ARRIBA HACIA ABAJO
+		//analizo solo vericalmente de arriba hacia abajo, ya que 
+		//analizo la matriz en orden si lo encuentra de abajo hacia arriba
+		//ya encontro el match previamente de arriba hacia abajo
+		//pasa lo mismo al analizar de manera horizontal y oblicua
 		rowPos = 0;
 		for (RowDna auxDna : rowDnaList) {
 			columPos = 0;
