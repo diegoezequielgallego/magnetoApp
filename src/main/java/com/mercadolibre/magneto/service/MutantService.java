@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mercadolibre.magneto.controller.RestApiController;
 import com.mercadolibre.magneto.dto.CountDTO;
 import com.mercadolibre.magneto.util.DnaUtils;
 import com.mercadolibre.magneto.util.MutantThread;
 import com.mercadolibre.magneto.util.ThreadUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,8 @@ import com.mercadolibre.magneto.repositories.MutantRepository;
 @Service
 @Scope("singleton")
 public class MutantService {
+	
+	public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 
 	@Autowired
 	MutantRepository mutantRepository;
@@ -29,11 +35,9 @@ public class MutantService {
 
 
 	public CountDTO getStats(){
-		System.out.println("llego");
 		if(DnaUtils.getCount() == null){
 			DnaUtils.setCount(mutantRepository.findTotales());
 			DnaUtils.getCount().setCountHumanDna(mutantRepository.count() - DnaUtils.getCount().getCountMutantDna());
-
 			DnaUtils.getCount().setRatio((float) DnaUtils.getCount().getCountMutantDna() / DnaUtils.getCount().getCountHumanDna());
 		}
 		return DnaUtils.getCount();
@@ -46,7 +50,7 @@ public class MutantService {
 		//lo ideal no seria usar un mapa como si fuese cache pero
 		//por cuestiones de tiempo no llgue a configurar un mongoDB en el contenedor
 		if(DnaUtils.getDnaMap().get(Arrays.hashCode(dna.toArray())) != null){
-			System.out.println("ya está registrado");
+			logger.warn("el DNA ya está registrado");
 			return DnaUtils.getDnaMap().get(Arrays.hashCode(dna.toArray()));
 		}
 
@@ -101,7 +105,6 @@ public class MutantService {
 		int mathDnaMutant = 0;
 
 		// LEO LA MATRIZ DE IZQ A DERECHA Y DE ARRIBA HACIA ABAJO
-		//
 		rowPos = 0;
 		for (RowDna auxDna : rowDnaList) {
 			columPos = 0;
@@ -112,13 +115,13 @@ public class MutantService {
 					return true;
 				}
 
-				// Esta validacion lo hago por si esta en la columna 4 de 6
+				// Esta validacion la hago por si esta en la columna 4 de 6
 				// nunca va a tener 4 campos continuos horizontales
-				// hacia adelante y evitar procesamiento innecesario
+				// hacia adelantem, por lo tanto evito procesamiento innecesario
 				if ((columPos + 3) <= auxDna.getDnaLine().size()) {
 					// BUSCAR DE MANERA HORIZONTAL DE IZQ A DERECHA
 					if (searchHorizontal(auxDna, nitroBase, columPos, 0)) {
-						System.out.println("es mutante magneto!! " + nitroBase);
+						logger.warn("Encontro un match con la base nitrogenada: " + nitroBase);
 						mathDnaMutant++;
 					}
 				}
@@ -128,7 +131,7 @@ public class MutantService {
 				if (rowPos + 3 <= auxDna.getDnaLine().size()) {
 					// BUSCAR DE MANERA VERTICAL DE ARRIBA HACIA ABAJO
 					if (searchVertical(rowDnaList, nitroBase, rowPos, columPos, 0)) {
-						System.out.println("es mutante charles!! " + nitroBase);
+						logger.warn("Encontro un match con la base nitrogenada: " + nitroBase);
 						mathDnaMutant++;
 					}
 				}
@@ -139,7 +142,7 @@ public class MutantService {
 				if ((columPos + 3 <= auxDna.getDnaLine().size()) && (rowPos + 3 <= auxDna.getDnaLine().size())) {
 					// BUSCAR DE MANERA OBLICUA DE ARRIBA HACIA ABAJO Y DE IZQ A DERECHA
 					if (searchObliquePositive(rowDnaList, nitroBase, rowPos, columPos, 0)) {
-						System.out.println("es mutante wolwerine!! " + nitroBase);
+						logger.warn("Encontro un match con la base nitrogenada: " + nitroBase);
 						mathDnaMutant++;
 					}
 				}
@@ -150,7 +153,7 @@ public class MutantService {
 				if ((columPos - 3 >= 0) && (rowPos + 3 <= auxDna.getDnaLine().size())) {
 					// BUSCAR DE MANERA OBLICUA DE ARRIBA HACIA ABAJO Y DE DERECHA A IZQ
 					if (searchObliqueNegative(rowDnaList, nitroBase, rowPos, columPos, 0)) {
-						System.out.println("es mutante wilson!! " + nitroBase);
+						logger.warn("Encontro un match con la base nitrogenada: " + nitroBase);
 						mathDnaMutant++;
 					}
 				}
