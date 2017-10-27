@@ -1,5 +1,6 @@
 package com.mercadolibre.magneto.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class AppTest {
 
 	@Test
 	public void testIsMutant() throws Exception {
+		mutantRepository.deleteAll();
+		mutantService.clearStats();
+		
 		List<String> aux;
 		//mutante
 		aux = Arrays.asList("ATGGGG","CATTGA","TTATGA","TGAAGA","CCCCTA","TCACTG");
@@ -56,12 +60,39 @@ public class AppTest {
 	
 	@Test
 	public void bulkTest() throws Exception {
+		mutantRepository.deleteAll();
+		mutantService.clearStats();
 		
+		for (int i = 0; i < 1000; i++) {
+			mutantService.isMutant(generateRandomDna());
+		}
+		//dejo un sleep de 10 segundos asi le doy tiempo a que guarde en los thread paralelos 
+		Thread.sleep(5000);
+		
+		CountDTO count = mutantService.getStats();
+		Long total = count.getCountHumanDna() + count.getCountMutantDna();
+		long auxTotal = mutantRepository.count();
+		
+		Assert.isTrue(total.equals(auxTotal));
 	}
 	
-	private List<String> generateRandom(){
-		
+	private List<String> generateRandomDna(){
+		List<String> dna = new ArrayList<>();
+		for (int i = 0; i <= 4; i++) {
+			dna.add(generateRandomNitro());
+		}
+		return dna;
 	}
 	
+	private String generateRandomNitro(){
+		List<String> nitro = Arrays.asList("A","T","C","G");
+		String aux = nitro.get(0 + (int)(Math.random() * 4))
+				+nitro.get(0 + (int)(Math.random() * 4))
+				+nitro.get(0 + (int)(Math.random() * 4))
+				+nitro.get(0 + (int)(Math.random() * 4))
+				+nitro.get(0 + (int)(Math.random() * 4));
+		return aux;
+		
+	}
 
 }
