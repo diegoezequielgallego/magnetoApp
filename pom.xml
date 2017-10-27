@@ -60,18 +60,22 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.5</version>
 		</dependency>
-	
-	
+
+
 	</dependencies>
-	
+
 	<build>
 		<plugins>
-			<plugin><!-- Include if you want to make an executable jar[FAT JAR which 
-					includes all dependencies along with sprinboot loader] that you can run on 
-					commandline using java -jar NAME -->
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>appengine-maven-plugin</artifactId>
+				<version>1.2.1</version>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
