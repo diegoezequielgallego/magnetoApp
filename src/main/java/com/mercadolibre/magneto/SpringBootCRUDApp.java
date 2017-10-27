@@ -8,7 +8,7 @@ import com.mercadolibre.magneto.configuration.JpaConfiguration;
 
 
 @Import(JpaConfiguration.class)
-@SpringBootApplication(scanBasePackages={"com.mercadolibre.magneto"})// same as @Configuration @EnableAutoConfiguration @ComponentScan
+@SpringBootApplication(scanBasePackages={"com.mercadolibre.magneto"})
 public class SpringBootCRUDApp {
 
 	public static void main(String[] args) {

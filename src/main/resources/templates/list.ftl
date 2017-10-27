@@ -18,7 +18,7 @@
 								ng-class="{'has-error': myForm.dna.$dirty && myForm.dna.$error.required}">
 								<label class="col-md-2 control-lable" for="llamada">DNA: </label>
 								<div class="col-md-7">
-									<input type="text" name="dna" ng-model="data.properties.dna"
+									<input type="text" name="dna" ng-model="data.dna"
 										id="dna" class="form-control input-sm" required />
 								</div>
 								<span ng-show="myForm.dna.$dirty && myForm.dna.$error.required">campo requerido</span>

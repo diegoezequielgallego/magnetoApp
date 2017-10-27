@@ -6,7 +6,6 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -15,7 +14,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -32,9 +30,6 @@ import com.zaxxer.hikari.HikariDataSource;
 		transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
 public class JpaConfiguration {
-
-	@Autowired
-	private Environment environment;
 
 	@Value("${datasource.sampleapp.maxPoolSize:10}")
 	private int maxPoolSize;
@@ -59,10 +54,10 @@ public class JpaConfiguration {
 		DataSourceProperties dataSourceProperties = dataSourceProperties();
 			HikariDataSource dataSource = (HikariDataSource) DataSourceBuilder
 					.create(dataSourceProperties.getClassLoader())
-					.driverClassName(dataSourceProperties.getDriverClassName())
-					.url(dataSourceProperties.getUrl())
-					.username(dataSourceProperties.getUsername())
-					.password(dataSourceProperties.getPassword())
+					.driverClassName("org.h2.Driver")
+					.url("jdbc:h2:~/test")
+					.username("SA")
+					.password("")
 					.type(HikariDataSource.class)
 					.build();
 			dataSource.setMaximumPoolSize(maxPoolSize);
@@ -96,13 +91,10 @@ public class JpaConfiguration {
 	 */
 	private Properties jpaProperties() {
 		Properties properties = new Properties();
-		properties.put("hibernate.dialect", environment.getRequiredProperty("datasource.sampleapp.hibernate.dialect"));
-		properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("datasource.sampleapp.hibernate.hbm2ddl.method"));
-		properties.put("hibernate.show_sql", environment.getRequiredProperty("datasource.sampleapp.hibernate.show_sql"));
-		properties.put("hibernate.format_sql", environment.getRequiredProperty("datasource.sampleapp.hibernate.format_sql"));
-		if(StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.sampleapp.defaultSchema"))){
-			properties.put("hibernate.default_schema", environment.getRequiredProperty("datasource.sampleapp.defaultSchema"));
-		}
+		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		properties.put("hibernate.hbm2ddl.auto", "create-drop");
+		properties.put("hibernate.show_sql", "false");
+		properties.put("hibernate.format_sql", "false");
 		return properties;
 	}
 

@@ -99,7 +99,7 @@ public class MutantService {
 
 	}
 
-	public boolean analizeMatrix(List<RowDna> rowDnaList) {
+	private boolean analizeMatrix(List<RowDna> rowDnaList) {
 		int rowPos;
 		int columPos;
 		int mathDnaMutant = 0;

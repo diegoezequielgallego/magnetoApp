@@ -21,12 +21,12 @@ public class RestApiController {
 	public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 
 	@Autowired
-	MutantService configService;
+	MutantService mutantService;
 
 	@RequestMapping(value = "/mutant/", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<?> isMutant(@RequestBody DnaDTO dna) {
 		try {
-			if (configService.isMutant(dna.getDna())) {
+			if (mutantService.isMutant(dna.getDna())) {
 				return ResponseEntity.ok(HttpStatus.OK);
 			} else {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new CustomErrorType("No Es mutante"));
@@ -42,7 +42,7 @@ public class RestApiController {
 	@RequestMapping(value = "/getallmutants/", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllMutants() {
 		try {
-			return ResponseEntity.ok(configService.getAllMutants());
+			return ResponseEntity.ok(mutantService.getAllMutants());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.badRequest().body(new CustomErrorType("fallo al obtener mutantes"));
@@ -53,7 +53,7 @@ public class RestApiController {
 	@RequestMapping(value = "/stats", method = RequestMethod.GET)
 	public ResponseEntity<?> getStats() {
 		try {
-			return ResponseEntity.ok(configService.getStats());
+			return ResponseEntity.ok(mutantService.getStats());
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.badRequest().body(new CustomErrorType("fallo al obtener mutantes"));

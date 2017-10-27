@@ -8,7 +8,8 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
 			successMessage : '',
 			errorMessage : '',
 			countMutantDna: {},
-			buttonRunDisable : false
+			buttonRunDisable : false,
+			dna : ''
 		}
 
         $scope.submit = function() {
@@ -16,7 +17,8 @@ angular.module('crudApp').controller('ConfigController', ['ConfigService', '$sco
             $scope.data.buttonRunDisable = true;
             $scope.data.successMessage = 'Corriendo ...';
 
-            var dna = ["ATGGGG", "CATTGA", "TTATGA", "TGAAGA", "CCCCTA", "TCACTG"];
+            //var dna = ["ATGGGG", "CATTGA", "TTATGA", "TGAAGA", "CCCCTA", "TCACTG"];
+            var dna = $scope.data.dna.split(',');
             
             service.isMutant({dna: dna}).then(
                 function (response) {
