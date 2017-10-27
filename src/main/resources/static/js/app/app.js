@@ -1,8 +1,8 @@
 var app = angular.module('crudApp',['ui.router','ngStorage','oc.lazyLoad']);
 
 app.constant('urls', {
-    BASE: 'http://localhost:8090/magnetoApp',
-    USER_SERVICE_API : 'http://localhost:8090/magnetoApp/api/'
+    BASE: 'http://localhost:8084/magnetoApp',
+    USER_SERVICE_API : 'http://localhost:8084/magnetoApp/api/'
 });
 
 app.config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
