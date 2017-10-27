@@ -61,4 +61,9 @@ public class RestApiController {
 
 	}
 
+	@RequestMapping(value = "/restart", method = RequestMethod.POST)
+	public void restart() {
+		mutantService.restart();
+	}
+
 }

@@ -37,7 +37,13 @@ public class MutantService {
 	public void clearStats() {
 		DnaUtils.setCount(null);
 	}
-	
+
+	public void restart() {
+		mutantRepository.deleteAll();
+		DnaUtils.setCount(null);
+	}
+
+
 	public CountDTO getStats(){
 		if(DnaUtils.getCount() == null){
 			DnaUtils.setCount(mutantRepository.findTotales());
